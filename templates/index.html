@@ -1,0 +1,464 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ShopSphere | Online Shopping</title>
+    <meta name="description" content="Discover electronics and travel essentials at ShopSphere.">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .navbar {
+            background: #ffffff;
+            padding: 18px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a:hover {
+            color: #2563eb;
+        }
+
+        .hero {
+            padding: 75px 8%;
+            background: linear-gradient(135deg, #dbeafe, #eff6ff);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 35px;
+            flex-wrap: wrap;
+        }
+
+        .hero-content {
+            flex: 1;
+            min-width: 260px;
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 5vw, 48px);
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: #0f172a;
+        }
+
+        .hero p {
+            color: #475569;
+            font-size: 17px;
+            max-width: 540px;
+            margin-bottom: 28px;
+        }
+
+        .hero-art {
+            font-size: 100px;
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #2563eb;
+            color: #ffffff;
+            border-radius: 7px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 14px;
+        }
+
+        .button:hover {
+            background: #1d4ed8;
+        }
+
+        .button:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .products-section {
+            padding: 55px 8%;
+        }
+
+        .section-heading {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .section-heading h2 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .section-heading p {
+            color: #64748b;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 24px;
+        }
+
+        .product-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+        }
+
+        .product-emoji {
+            background: #eff6ff;
+            width: 100%;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-size: 65px;
+            margin-bottom: 18px;
+        }
+
+        .category {
+            font-size: 13px;
+            color: #2563eb;
+            background: #dbeafe;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+        }
+
+        .product-card h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .description {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 14px;
+        }
+
+        .price {
+            font-size: 22px;
+            font-weight: bold;
+            color: #0f172a;
+            margin-top: auto;
+            margin-bottom: 10px;
+        }
+
+        .stock {
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+
+        .in-stock {
+            color: #15803d;
+        }
+
+        .out-of-stock {
+            color: #dc2626;
+        }
+
+        .product-card form {
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .product-card form .button {
+            width: 100%;
+        }
+
+        .flash-messages {
+            padding: 0 8%;
+        }
+
+        .flash-message {
+            margin-top: 15px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .flash-error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 35px;
+            color: #64748b;
+            grid-column: 1 / -1;
+        }
+
+        .benefits {
+            background: #ffffff;
+            padding: 35px 8%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 25px;
+            text-align: center;
+        }
+
+        .benefit {
+            padding: 15px;
+        }
+
+        .benefit span {
+            display: block;
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .benefit p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        footer {
+            background: #0f172a;
+            color: #ffffff;
+            padding: 30px 8%;
+            text-align: center;
+        }
+
+        footer p {
+            color: #cbd5e1;
+            font-size: 14px;
+            margin-top: 6px;
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                padding: 16px 5%;
+            }
+
+            .nav-links {
+                gap: 14px;
+            }
+
+            .hero,
+            .products-section {
+                padding: 40px 5%;
+            }
+
+            .hero-art {
+                font-size: 75px;
+            }
+
+            .section-heading h2 {
+                font-size: 27px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation bar -->
+    <header class="navbar">
+        <a class="logo" href="/">ShopSphere</a>
+
+        <nav class="nav-links" aria-label="Main navigation">
+            <a href="/">Home</a>
+            <a href="#products">Products</a>
+            <a href="#benefits">Why ShopSphere?</a>
+            <a href="{{ url_for('main.view_cart') }}">
+                🛒 Cart ({{ cart_count }})
+            </a>
+        </nav>
+    </header>
+
+    <main>
+
+        <!-- Hero section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Find Your Next Favorite Thing.</h1>
+
+                <p>
+                    Discover useful electronics and travel essentials
+                    at ShopSphere. Great products for everyday life
+                    and your next adventure.
+                </p>
+
+                <a class="button" href="#products">
+                    Explore Products
+                </a>
+            </div>
+
+            <div class="hero-art" aria-hidden="true">
+                🛍️
+            </div>
+        </section>
+
+        <!-- Flask flash messages -->
+        <section class="flash-messages" aria-live="polite">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% for category, message in messages %}
+                    <div class="flash-message {% if category == 'error' %}flash-error{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endwith %}
+        </section>
+
+        <!-- Dynamic product catalog -->
+        <section class="products-section" id="products">
+            <div class="section-heading">
+                <h2>Our Products</h2>
+                <p>Explore our latest picks for you.</p>
+            </div>
+
+            <div class="product-grid">
+
+                {% for product in products %}
+
+                    <article class="product-card">
+
+                        <div class="product-emoji" aria-hidden="true">
+                            {{ product.emoji }}
+                        </div>
+
+                        <span class="category">
+                            {{ product.category }}
+                        </span>
+
+                        <h3>{{ product.name }}</h3>
+
+                        <p class="description">
+                            {{ product.description }}
+                        </p>
+
+                        <p class="price">
+                            ₹{{ "{:,.2f}".format(product.price) }}
+                        </p>
+
+                        {% if product.stock > 0 %}
+                            <p class="stock in-stock">
+                                ✓ In stock: {{ product.stock }}
+                            </p>
+                        {% else %}
+                            <p class="stock out-of-stock">
+                                Currently out of stock
+                            </p>
+                        {% endif %}
+
+                        <!-- Add product to Flask session cart -->
+                        <form
+                            action="{{ url_for('main.add_to_cart', product_id=product.id) }}"
+                            method="POST"
+                        >
+                            <button
+                                class="button"
+                                type="submit"
+                                {% if product.stock <= 0 %}disabled{% endif %}
+                            >
+                                {% if product.stock > 0 %}
+                                    Add to Cart
+                                {% else %}
+                                    Unavailable
+                                {% endif %}
+                            </button>
+                        </form>
+
+                    </article>
+
+                {% else %}
+
+                    <div class="empty-state">
+                        <h3>No products available</h3>
+                        <p>Please check back later.</p>
+                    </div>
+
+                {% endfor %}
+
+            </div>
+        </section>
+
+        <!-- Store benefits -->
+        <section class="benefits" id="benefits">
+
+            <div class="benefit">
+                <span aria-hidden="true">🚚</span>
+                <h3>Easy Shopping</h3>
+                <p>Browse products in one convenient place.</p>
+            </div>
+
+            <div class="benefit">
+                <span aria-hidden="true">🔒</span>
+                <h3>Built with Care</h3>
+                <p>A simple, user-friendly shopping experience.</p>
+            </div>
+
+            <div class="benefit">
+                <span aria-hidden="true">📦</span>
+                <h3>Product Variety</h3>
+                <p>Discover everyday and travel essentials.</p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <a class="logo" href="/">ShopSphere</a>
+        <p>Your everyday shopping destination.</p>
+        <p>&copy; 2026 ShopSphere. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

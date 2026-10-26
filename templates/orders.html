@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History | ShopSphere</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 30px 5%;
+            font-family: Arial, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+        }
+        main { max-width: 900px; margin: auto; }
+        .order {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 16px 0;
+        }
+        .row {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 14px;
+            border-radius: 6px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+        }
+        .muted { color: #64748b; }
+    </style>
+</head>
+<body>
+<main>
+    <h1>Your Order History</h1>
+    <p class="muted">Orders saved in the local ShopSphere database.</p>
+
+    {% if orders %}
+        {% for order in orders %}
+            <section class="order">
+                <div class="row">
+                    <h2>Order #{{ order.id }}</h2>
+                    <strong>₹{{ "{:,.2f}".format(order.total_amount) }}</strong>
+                </div>
+
+                <p><strong>Customer:</strong> {{ order.customer_name }}</p>
+                <p><strong>Status:</strong> {{ order.status }}</p>
+                <p class="muted">
+                    {{ order.created_at.strftime("%d %b %Y, %I:%M %p") }}
+                </p>
+
+                <a class="button"
+                   href="{{ url_for('main.order_confirmation', order_id=order.id) }}">
+                    View order
+                </a>
+            </section>
+        {% endfor %}
+    {% else %}
+        <p>No orders yet. Place a demo order to see it here.</p>
+    {% endif %}
+
+    <p><a href="{{ url_for('main.home') }}">← Back to shopping</a></p>
+</main>
+</body>
+</html>

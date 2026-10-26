@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation | ShopSphere</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 35px 5%;
+            font-family: Arial, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+        }
+        main {
+            max-width: 720px;
+            margin: auto;
+            padding: 28px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+        }
+        .success { color: #15803d; }
+        .item {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .button {
+            display: inline-block;
+            margin: 12px 8px 0 0;
+            padding: 12px 16px;
+            border-radius: 6px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+        }
+        .muted { color: #64748b; }
+    </style>
+</head>
+<body>
+<main>
+    <h1 class="success">Order placed successfully!</h1>
+    <p>Your demo order has been saved to the ShopSphere database.</p>
+
+    <h2>Order #{{ order.id }}</h2>
+    <p><strong>Status:</strong> {{ order.status }}</p>
+    <p><strong>Customer:</strong> {{ order.customer_name }}</p>
+    <p><strong>Delivery address:</strong> {{ order.address }}</p>
+
+    <p class="muted">
+        Order date: {{ order.created_at.strftime("%d %b %Y, %I:%M %p") }}
+    </p>
+
+    <h3>Items</h3>
+    {% for item in order.items %}
+        <div class="item">
+            <span>{{ item.product_name }} × {{ item.quantity }}</span>
+            <strong>₹{{ "{:,.2f}".format(item.subtotal) }}</strong>
+        </div>
+    {% endfor %}
+
+    <h2>Total: ₹{{ "{:,.2f}".format(order.total_amount) }}</h2>
+
+    <a class="button" href="{{ url_for('main.home') }}">Continue shopping</a>
+    <a class="button" href="{{ url_for('main.order_history') }}">Order history</a>
+</main>
+</body>
+</html>

@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | ShopSphere</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 30px 5%;
+            font-family: Arial, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+        }
+        .container { max-width: 760px; margin: auto; }
+        .panel {
+            background: white;
+            padding: 24px;
+            margin: 20px 0;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+        }
+        label { display: block; margin: 18px 0 7px; font-weight: bold; }
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font: inherit;
+        }
+        textarea { min-height: 100px; resize: vertical; }
+        .item {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 14px 0;
+        }
+        .total { text-align: right; font-size: 23px; font-weight: bold; }
+        .button {
+            display: inline-block;
+            padding: 12px 18px;
+            border: 0;
+            border-radius: 6px;
+            background: #2563eb;
+            color: white;
+            font-size: 15px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .message {
+            padding: 12px;
+            background: #fee2e2;
+            border-radius: 6px;
+        }
+        .muted { color: #64748b; }
+    </style>
+</head>
+<body>
+<main class="container">
+    <h1>Checkout</h1>
+    <p class="muted">Demo checkout — no payment will be collected.</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <p class="message">{{ message }}</p>
+        {% endfor %}
+    {% endwith %}
+
+    <section class="panel">
+        <h2>Order summary</h2>
+
+        {% for item in items %}
+            <div class="item">
+                <span>
+                    {{ item.product.emoji }} {{ item.product.name }}
+                    × {{ item.quantity }}
+                </span>
+                <strong>₹{{ "{:,.2f}".format(item.subtotal) }}</strong>
+            </div>
+        {% endfor %}
+
+        <p class="total">Total: ₹{{ "{:,.2f}".format(total) }}</p>
+    </section>
+
+    <form class="panel" method="POST" action="{{ url_for('main.checkout') }}">
+        <h2>Delivery details</h2>
+
+        <label for="customer_name">Full name</label>
+        <input id="customer_name" name="customer_name"
+               maxlength="120" required autocomplete="name">
+
+        <label for="address">Delivery address</label>
+        <textarea id="address" name="address"
+                  maxlength="1000" required autocomplete="street-address"></textarea>
+
+        <p class="muted">
+            This is a local portfolio demo. Use test details, not real personal information.
+        </p>
+
+        <button class="button" type="submit">Place Demo Order</button>
+        <a href="{{ url_for('main.view_cart') }}">Back to cart</a>
+    </form>
+</main>
+</body>
+</html>
