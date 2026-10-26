@@ -145,3 +145,4 @@ This is a learning and portfolio project, not a production-ready e-commerce serv
 ## Repository
 
 https://github.com/JonSOnow/shopsphere-devops
+CI automation test: Jenkins checks GitHub for new commits.
