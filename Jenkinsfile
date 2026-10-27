@@ -37,11 +37,23 @@ pipeline {
                 bat '.venv\\Scripts\\python.exe -m pytest -v'
             }
         }
+
+        stage('Check Docker') {
+            steps {
+                bat 'docker version'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                bat 'docker build -t shopsphere:ci-%BUILD_NUMBER% .'
+            }
+        }
     }
 
     post {
         success {
-            echo 'ShopSphere CI pipeline completed successfully!'
+            echo 'ShopSphere CI pipeline and Docker image build completed successfully!'
         }
         failure {
             echo 'Pipeline failed. Check Console Output for details.'
