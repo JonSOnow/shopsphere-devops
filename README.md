@@ -146,3 +146,4 @@ This is a learning and portfolio project, not a production-ready e-commerce serv
 
 https://github.com/JonSOnow/shopsphere-devops
 CI automation test: Jenkins checks GitHub for new commits.
+Jenkins automatic polling test - 27 October 2026
