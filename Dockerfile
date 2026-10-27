@@ -5,10 +5,13 @@ WORKDIR /app
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+ENV PIP_DEFAULT_TIMEOUT=180
+ENV PIP_RETRIES=5
 
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt \
-    && pip install --no-cache-dir gunicorn
+
+RUN pip install --no-cache-dir --retries 5 --timeout 180 -r requirements.txt \
+    && pip install --no-cache-dir --retries 5 --timeout 180 gunicorn
 
 COPY . .
 
