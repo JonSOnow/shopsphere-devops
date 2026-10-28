@@ -56,11 +56,23 @@ pipeline {
                 bat 'docker build -t shopsphere:ci-%BUILD_NUMBER% .'
             }
         }
+
+        stage('Deploy with Docker Compose') {
+            steps {
+                bat 'docker compose up -d --build'
+            }
+        }
+
+        stage('Health Check') {
+            steps {
+                bat 'powershell -NoProfile -ExecutionPolicy Bypass -Command "$ok = $false; for ($i = 0; $i -lt 12; $i++) { try { $r = Invoke-WebRequest -Uri http://localhost:8081/health -UseBasicParsing -TimeoutSec 5; if ($r.StatusCode -eq 200 -and $r.Content -match ''healthy'') { $ok = $true; break } } catch {}; Start-Sleep -Seconds 5 }; if (-not $ok) { docker compose ps; docker compose logs --tail 80; exit 1 }; Write-Output ''ShopSphere health check passed''' 
+            }
+        }
     }
 
     post {
         success {
-            echo 'ShopSphere CI, Compose validation, and Docker image build completed successfully!'
+            echo 'ShopSphere CI, Docker build, Compose deployment, and health check completed successfully!'
         }
         failure {
             echo 'Pipeline failed. Check Console Output for details.'
