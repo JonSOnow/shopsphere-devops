@@ -15,7 +15,9 @@ RUN pip install --no-cache-dir --retries 5 --timeout 180 -r requirements.txt \
 
 COPY . .
 
-RUN mkdir -p /app/instance
+RUN sed -i 's/\r$//' /app/entrypoint.sh \
+    && chmod +x /app/entrypoint.sh \
+    && mkdir -p /app/instance
 
 EXPOSE 5000
 
