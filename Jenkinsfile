@@ -44,6 +44,13 @@ pipeline {
             }
         }
 
+        stage('Validate Docker Compose') {
+            steps {
+                bat 'docker compose config --quiet'
+                echo 'Docker Compose configuration is valid'
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 bat 'docker build -t shopsphere:ci-%BUILD_NUMBER% .'
@@ -53,7 +60,7 @@ pipeline {
 
     post {
         success {
-            echo 'ShopSphere CI pipeline and Docker image build completed successfully!'
+            echo 'ShopSphere CI, Compose validation, and Docker image build completed successfully!'
         }
         failure {
             echo 'Pipeline failed. Check Console Output for details.'
