@@ -63,7 +63,6 @@ pipeline {
             }
         }
 
-        
         stage('Health Check') {
             steps {
                 script {
@@ -93,7 +92,15 @@ pipeline {
                 }
             }
         }
+    }
 
+    post {
+        success {
+            echo 'ShopSphere CI, Docker build, Compose deployment, and health check completed successfully!'
+        }
+
+        failure {
+            echo 'Pipeline failed. Check Console Output for details.'
         }
     }
 }
