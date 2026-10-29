@@ -63,7 +63,6 @@ pipeline {
             }
         }
 
-        
         stage('Health Check') {
             steps {
                 script {
@@ -72,8 +71,7 @@ pipeline {
                     for (int i = 0; i < 12; i++) {
                         def status = bat(
                             script: 'curl.exe -s -o NUL -w "%%{http_code}" http://localhost:8081/health',
-                            returnStdout: true,
-                            returnStatus: false
+                            returnStdout: true
                         ).trim()
 
                         if (status.endsWith('200')) {
@@ -94,4 +92,15 @@ pipeline {
                 }
             }
         }
+    }
 
+    post {
+        success {
+            echo 'ShopSphere CI, Docker build, Compose deployment, and health check completed successfully!'
+        }
+
+        failure {
+            echo 'Pipeline failed. Check Console Output for details.'
+        }
+    }
+}
